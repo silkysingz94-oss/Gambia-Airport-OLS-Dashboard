@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GBoS GEOAI | Global Airport OLS Intelligence</title>
+<title>GBoS GEOAI | Gambia Airport OLS Intelligence</title>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -13,68 +13,65 @@
 
 <style>
 :root{
- --bg:#08111e;--panel:#111e30;--panel2:#18283d;--line:#293e57;
- --text:#eaf2fc;--muted:#91a7c0;--cyan:#28c5d8;
- --blue:#438dff;--green:#31c58d;--orange:#ffae42;--red:#ff5d6d;
+  --bg:#08111f;--panel:#111e30;--panel2:#17263b;--line:#263b54;
+  --text:#e8f0fa;--muted:#8fa4bd;--cyan:#27c6d8;
+  --blue:#3887ff;--green:#2bc48a;--orange:#ffae42;--red:#ff5e6c;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
-header{height:65px;background:#0d192a;border-bottom:1px solid var(--line);
- display:flex;justify-content:space-between;align-items:center;padding:9px 17px}
-.brand{font-size:17px;font-weight:800;letter-spacing:.5px}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif}
+header{height:66px;padding:10px 20px;background:#0c192a;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+.brand{font-weight:800;letter-spacing:.5px;font-size:17px}
 .brand span{color:var(--cyan)}
-.subtitle{font-size:10px;color:var(--muted);margin-top:4px}
-.header-right{display:flex;gap:8px;align-items:center}
-.pill{border:1px solid var(--line);padding:7px 10px;border-radius:20px;font-size:10px;color:#c5d6e8}
-.dot{display:inline-block;width:7px;height:7px;background:var(--green);border-radius:50%;margin-right:5px}
-main{height:calc(100vh - 65px);padding:9px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px}
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:9px;overflow:auto;min-width:0}
-.panel-head{padding:12px 13px;border-bottom:1px solid var(--line);font-size:12px;font-weight:800;display:flex;justify-content:space-between;align-items:center}
-.panel-body{padding:12px}
+.subbrand{font-size:10px;color:var(--muted);margin-top:4px}
+.header-right{display:flex;gap:9px;align-items:center}
+.pill{border:1px solid var(--line);padding:7px 10px;border-radius:20px;font-size:11px;color:#b7c9dd}
+.status-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:6px}
+main{height:calc(100vh - 66px);padding:10px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;min-width:0;overflow:auto}
+.panel-head{padding:13px 14px;border-bottom:1px solid var(--line);font-size:13px;font-weight:800;display:flex;justify-content:space-between}
+.panel-body{padding:13px}
 .section{margin-bottom:15px}
-.section-title{font-size:10px;color:var(--cyan);font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
-label{display:block;font-size:10px;color:var(--muted);margin:8px 0 5px}
-input,select{width:100%;background:#0a1728;color:var(--text);border:1px solid var(--line);padding:9px;border-radius:5px;font-size:11px}
+.section-title{font-size:10px;color:var(--cyan);font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:9px}
+label{display:block;color:var(--muted);font-size:11px;margin:9px 0 5px}
+input,select,button{font:inherit}
+input,select{width:100%;background:#0b1727;color:var(--text);border:1px solid var(--line);padding:9px;border-radius:6px;font-size:12px}
 input[type=checkbox]{width:auto;accent-color:var(--cyan)}
-button{border:0;background:#117eaa;color:white;padding:9px 11px;border-radius:5px;font-size:10px;font-weight:800;cursor:pointer}
+input[type=range]{padding:0}
+button{background:#147eaa;color:white;border:0;padding:10px 12px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:700}
 button:hover{filter:brightness(1.15)}
-button:disabled{opacity:.45;cursor:wait}
-button.secondary{background:#2a405a;color:#e5eef9}
-button.green{background:#167a5a}
-button.orange{background:#9a6220}
-button.full{width:100%;margin-top:7px}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:7px}
-.check{display:flex;align-items:center;gap:7px;color:#c9d8e8;font-size:10px;margin:7px 0}
+button.secondary{background:#263b54;color:#dce9f7}
+button.danger{background:#8c3444}
+button.full{width:100%;margin-top:8px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.checkline{display:flex;align-items:center;gap:7px;font-size:11px;color:#c6d5e5;margin:8px 0}
 .small{font-size:10px;color:var(--muted);line-height:1.5}
-.notice{padding:9px;background:#302719;border-left:3px solid var(--orange);border-radius:4px;color:#e9d6b3;font-size:10px;line-height:1.5}
-#map{height:calc(100% - 85px);min-height:390px}
-.map-wrap{display:flex;flex-direction:column;overflow:hidden}
-.map-tools{display:flex;gap:5px;padding:7px;background:#0d192a;border-bottom:1px solid var(--line);flex-wrap:wrap}
-.map-tools select{width:auto;flex:1;min-width:90px;padding:6px}
-.map-tools button{padding:7px}
-.kpis{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:12px}
-.kpi{background:var(--panel2);border:1px solid var(--line);padding:10px;border-radius:6px}
-.kpi .v{font-size:21px;font-weight:800;margin:5px 0}
-.kpi .k{font-size:9px;color:var(--muted)}
-.kpi .hint{font-size:9px;color:var(--cyan)}
-.chartbox{background:#0c192a;border:1px solid var(--line);padding:9px;border-radius:7px;margin:10px 0}
-.chartbox canvas{max-height:165px}
-#log{white-space:pre-wrap;background:#091522;padding:8px;border-radius:5px;color:#a8bdd2;font-size:9px;line-height:1.5;max-height:120px;overflow:auto}
-table{width:100%;border-collapse:collapse;font-size:9px}
-td,th{padding:6px;border-bottom:1px solid var(--line);text-align:left}
+#map{height:calc(100% - 47px);min-height:350px;background:#0a1422}
+.map-wrap{height:100%;display:flex;flex-direction:column}
+.map-tools{display:flex;gap:6px;align-items:center;padding:7px;background:#0e1a2b;border-bottom:1px solid var(--line)}
+.map-tools select{width:auto;max-width:150px;padding:6px}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:13px}
+.kpi{background:var(--panel2);padding:11px;border-radius:7px;border:1px solid var(--line)}
+.kpi .v{font-size:22px;font-weight:800;margin:5px 0}
+.kpi .k{font-size:10px;color:var(--muted)}
+.kpi .hint{font-size:10px;color:var(--cyan)}
+.chartbox{background:#0c192a;border:1px solid var(--line);border-radius:8px;padding:10px;margin:10px 0}
+.chartbox canvas{max-height:180px}
+.legend-row{display:flex;align-items:center;gap:7px;font-size:11px;margin:7px 0;color:#cbd8e6}
+.swatch{width:12px;height:12px;border-radius:3px;display:inline-block}
+#log{font-size:10px;line-height:1.6;color:#a8bdd2;background:#091522;padding:9px;border-radius:6px;max-height:120px;overflow:auto;white-space:pre-wrap}
+.notice{border-left:3px solid var(--orange);padding:9px;background:#2a241b;color:#e9d8b8;font-size:10px;line-height:1.5;border-radius:4px}
+table{width:100%;border-collapse:collapse;font-size:10px}
+td,th{padding:7px;border-bottom:1px solid var(--line);text-align:left}
 th{color:var(--muted)}
-.legend{font-size:10px;color:#cbd9e8;line-height:1.8}
-.swatch{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px}
-footer{padding:10px;text-align:center;font-size:9px;color:#8298b1;border-top:1px solid var(--line)}
-.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:#17283d;color:#edf5ff}
-.leaflet-control-attribution{font-size:8px!important}
-#loadingBar{height:3px;background:#16283c}
-#loadingProgress{height:3px;width:0;background:var(--cyan);transition:width .2s}
+footer{padding:12px;color:#8196ad;text-align:center;font-size:10px;border-top:1px solid var(--line)}
+.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:#14243a;color:#eaf3ff}
+.leaflet-control-attribution{font-size:9px!important}
 @media(max-width:1050px){
  main{height:auto;grid-template-columns:1fr}
  .panel{min-height:400px}
- .map-wrap{height:650px}
- #map{height:calc(100% - 85px)}
+ .map-wrap{height:600px}
+ #map{height:calc(100% - 47px)}
 }
 </style>
 </head>
@@ -82,123 +79,80 @@ footer{padding:10px;text-align:center;font-size:9px;color:#8298b1;border-top:1px
 <body>
 <header>
  <div>
-  <div class="brand">GBoS <span>GEOAI</span> | GLOBAL AIRPORT OLS INTELLIGENCE</div>
-  <div class="subtitle">WORLDWIDE AIRPORTS • ONLINE OBSTACLE EXTRACTION • RUNWAY ANALYSIS</div>
+  <div class="brand">GBoS <span>GEOAI</span> | AIRPORT OLS INTELLIGENCE</div>
+  <div class="subbrand">THE GAMBIA • OBSTACLE LIMITATION SURFACES • RESEARCH PROTOTYPE</div>
  </div>
  <div class="header-right">
-  <span class="pill"><span class="dot"></span><span id="connection">CONNECTING</span></span>
-  <span class="pill">GLOBAL DATABASE</span>
+  <span class="pill"><span class="status-dot"></span>LOCAL ANALYSIS</span>
+  <span class="pill">GBYD • BANJUL</span>
  </div>
 </header>
-<div id="loadingBar"><div id="loadingProgress"></div></div>
 
 <main>
-<!-- LEFT -->
+<!-- LEFT: CONTROLS -->
 <section class="panel">
- <div class="panel-head"><span>01 / AIRPORT & DATA CONTROLS</span><span>✈</span></div>
+ <div class="panel-head"><span>01 / AIRPORT & OLS CONTROLS</span><span>⚙</span></div>
  <div class="panel-body">
 
   <div class="section">
-   <div class="section-title">Global airport explorer</div>
-   <label>Search airport by ICAO, name or city</label>
-   <input id="airportSearch" list="airportOptions" placeholder="EDDS, Stuttgart, Frankfurt, Brussels, Accra...">
-   <datalist id="airportOptions"></datalist>
-   <div class="grid2">
-    <div><label>Region filter</label>
-     <select id="region">
-      <option value="all">All regions</option>
-      <option value="westafrica">West Africa</option>
-      <option value="germany">Germany</option>
-      <option value="belgium">Belgium</option>
-      <option value="europe">Europe</option>
-     </select>
-    </div>
-    <div><label>Airport type</label>
-     <select id="airportType">
-      <option value="all">All types</option>
-      <option value="large_airport">Large airports</option>
-      <option value="medium_airport">Medium airports</option>
-      <option value="small_airport">Small airports</option>
-     </select>
-    </div>
-   </div>
-   <label>Matching airports</label>
-   <select id="airportSelect" size="5" style="height:105px">
-    <option>Loading worldwide airport database...</option>
+   <div class="section-title">Airport configuration</div>
+   <label>Airport</label>
+   <select id="airport">
+    <option value="gbyd">Banjul International Airport (GBYD)</option>
+    <option value="custom">Custom airport / airstrip</option>
    </select>
-   <div class="small" id="airportCount">Airport catalogue not loaded.</div>
-   <button id="loadAirport" class="full">LOAD SELECTED AIRPORT</button>
+   <label>Airport name</label>
+   <input id="airportName" value="Banjul International Airport">
+   <div class="grid2">
+    <div><label>ICAO code</label><input id="icao" value="GBYD"></div>
+    <div><label>Runway designation</label><input id="rwy" value="14/32"></div>
+   </div>
+   <div class="grid2">
+    <div><label>Runway length (m)</label><input id="length" type="number" value="3600"></div>
+    <div><label>Runway width (m)</label><input id="width" type="number" value="45"></div>
+   </div>
+   <div class="grid2">
+    <div><label>Threshold 14 latitude</label><input id="lat14" type="number" step="0.000001" value="13.348600"></div>
+    <div><label>Threshold 14 longitude</label><input id="lon14" type="number" step="0.000001" value="-16.664801"></div>
+   </div>
+   <div class="grid2">
+    <div><label>Threshold 32 latitude</label><input id="lat32" type="number" step="0.000001" value="13.327400"></div>
+    <div><label>Threshold 32 longitude</label><input id="lon32" type="number" step="0.000001" value="-16.639601"></div>
+   </div>
+   <div class="grid2">
+    <div><label>Threshold 14 elevation (m)</label><input id="elev14" type="number" step=".01" value="26.82"></div>
+    <div><label>Threshold 32 elevation (m)</label><input id="elev32" type="number" step=".01" value="22.56"></div>
+   </div>
   </div>
 
   <div class="section">
-   <div class="section-title">Selected airport information</div>
-   <div class="grid2">
-    <div><label>ICAO / Identifier</label><input id="icao" readonly></div>
-    <div><label>Country</label><input id="country" readonly></div>
-   </div>
-   <label>Airport name</label><input id="airportName" readonly>
-   <div class="grid2">
-    <div><label>Latitude</label><input id="airportLat" readonly></div>
-    <div><label>Longitude</label><input id="airportLon" readonly></div>
-   </div>
-   <div class="grid2">
-    <div><label>Airport elevation (m)</label><input id="airportElev" readonly></div>
-    <div><label>Airport type</label><input id="airportClass" readonly></div>
-   </div>
+   <div class="section-title">Surface selection</div>
+   <label class="checkline"><input type="checkbox" id="approach" checked> Approach surfaces</label>
+   <label class="checkline"><input type="checkbox" id="takeoff" checked> Take-off climb surfaces</label>
+   <label class="checkline"><input type="checkbox" id="transitional" checked> Transitional surfaces</label>
+   <label class="checkline"><input type="checkbox" id="horizontal" checked> Inner horizontal surface</label>
+   <label class="checkline"><input type="checkbox" id="conical" checked> Conical surface</label>
+   <label class="checkline"><input type="checkbox" id="runway" checked> Runway geometry</label>
   </div>
 
   <div class="section">
-   <div class="section-title">Runway explorer</div>
-   <label>Available runways</label>
-   <select id="runwaySelect"><option>Load an airport first</option></select>
-   <div class="grid2">
-    <div><label>Runway length (m)</label><input id="rwyLength" readonly></div>
-    <div><label>Runway width (m)</label><input id="rwyWidth" readonly></div>
-   </div>
-   <div class="grid2">
-    <div><label>Threshold A elevation (m)</label><input id="elevA" readonly></div>
-    <div><label>Threshold B elevation (m)</label><input id="elevB" readonly></div>
-   </div>
-   <div class="small" id="runwayInfo">Runway data will appear after airport selection.</div>
-  </div>
-
-  <div class="section">
-   <div class="section-title">Online obstacle extraction</div>
-   <label>Search radius around airport (metres)</label>
-   <select id="radius">
-    <option value="2000">2 km</option>
-    <option value="3000">3 km</option>
-    <option value="5000" selected>5 km</option>
-    <option value="8000">8 km</option>
-    <option value="10000">10 km</option>
-   </select>
-   <label class="check"><input type="checkbox" id="getBuildings" checked> Buildings</label>
-   <label class="check"><input type="checkbox" id="getTowers" checked> Towers, masts and chimneys</label>
-   <label class="check"><input type="checkbox" id="getPower" checked> Power infrastructure</label>
-   <label class="check"><input type="checkbox" id="getCranes" checked> Cranes and construction objects</label>
-   <button id="fetchObstacles" class="full green">FETCH ONLINE OBSTACLES</button>
-   <button id="terrainButton" class="full secondary">RETRIEVE TERRAIN ELEVATIONS</button>
-   <div class="small" id="obstacleStatus">No online obstacle data loaded.</div>
-  </div>
-
-  <div class="section">
-   <div class="section-title">OLS geometry parameters</div>
-   <div class="notice">Demonstration settings only. Select the applicable ICAO Annex 14 runway code, approach type and governing provisions before operational use.</div>
+   <div class="section-title">Illustrative geometry parameters</div>
+   <div class="notice">These are editable demonstration parameters, not ICAO-prescribed values. Select the applicable runway category, approach type and governing Annex 14 provisions before operational use.</div>
    <div class="grid2">
     <div><label>Approach length (m)</label><input id="appLength" type="number" value="3000"></div>
     <div><label>Approach inner width (m)</label><input id="appWidth" type="number" value="300"></div>
    </div>
    <div class="grid2">
+    <div><label>Approach divergence (each side %)</label><input id="appDiv" type="number" value="15"></div>
     <div><label>Approach outer width (m)</label><input id="appOuter" type="number" value="1500"></div>
-    <div><label>Approach divergence (%)</label><input id="appDiv" type="number" value="15"></div>
    </div>
    <div class="grid2">
     <div><label>Take-off length (m)</label><input id="toLength" type="number" value="5000"></div>
     <div><label>Take-off inner width (m)</label><input id="toWidth" type="number" value="180"></div>
    </div>
    <div class="grid2">
-    <div><label>Take-off outer width (m)</label><input id="toOuter" type="number" value="1200"></div>
     <div><label>Take-off divergence (%)</label><input id="toDiv" type="number" value="12.5"></div>
+    <div><label>Take-off outer width (m)</label><input id="toOuter" type="number" value="1200"></div>
    </div>
    <div class="grid2">
     <div><label>Inner horizontal radius (m)</label><input id="ihRadius" type="number" value="4000"></div>
@@ -206,84 +160,79 @@ footer{padding:10px;text-align:center;font-size:9px;color:#8298b1;border-top:1px
    </div>
    <div class="grid2">
     <div><label>Transitional buffer (m)</label><input id="transWidth" type="number" value="300"></div>
-    <div><label>Screening reference (m AMSL)</label><input id="refHeight" type="number" value="45"></div>
+    <div><label>Reference surface height (m AMSL)</label><input id="refHeight" type="number" value="45"></div>
    </div>
-   <div class="section-title" style="margin-top:12px">Surfaces to generate</div>
-   <div class="grid2">
-    <label class="check"><input type="checkbox" id="approach" checked> Approach</label>
-    <label class="check"><input type="checkbox" id="takeoff" checked> Take-off climb</label>
-    <label class="check"><input type="checkbox" id="transitional" checked> Transitional</label>
-    <label class="check"><input type="checkbox" id="horizontal" checked> Inner horizontal</label>
-    <label class="check"><input type="checkbox" id="conical" checked> Conical</label>
-   </div>
-   <button id="generate" class="full">GENERATE OLS SURFACES</button>
+  </div>
+
+  <div class="section">
+   <div class="section-title">Obstacle data</div>
+   <label>Upload obstacle GeoJSON or CSV</label>
+   <input type="file" id="obstacleFile" accept=".geojson,.json,.csv">
+   <div class="small">GeoJSON point features should include a height property in metres AMSL. CSV should contain latitude, longitude and height_m fields.</div>
+   <button class="full secondary" id="clearObstacles">Clear obstacle data</button>
   </div>
 
   <div class="grid2">
-   <button id="exportGeo" class="secondary">EXPORT OLS GEOJSON</button>
-   <button id="exportCSV" class="secondary">EXPORT OBSTACLE CSV</button>
+   <button id="generate">GENERATE OLS</button>
+   <button id="reset" class="secondary">RESET VIEW</button>
   </div>
-  <button id="clear" class="full secondary">CLEAR ANALYSIS</button>
+  <button id="exportGeo" class="full secondary">EXPORT OLS GEOJSON</button>
+  <button id="exportObstacles" class="full secondary">EXPORT OBSTACLE SCREENING CSV</button>
+
  </div>
 </section>
 
-<!-- MAP -->
+<!-- CENTRE: MAP -->
 <section class="panel map-wrap">
- <div class="panel-head"><span>02 / GLOBAL AIRPORT MAP</span><span id="mapStatus">Waiting for airport</span></div>
+ <div class="panel-head"><span>02 / INTERACTIVE OLS MAP</span><span id="mapStatus">Awaiting generation</span></div>
  <div class="map-tools">
   <select id="basemap">
-   <option value="street">Street</option>
    <option value="sat">Satellite</option>
+   <option value="street" selected>Street</option>
    <option value="terrain">Terrain</option>
   </select>
-  <button class="secondary" id="zoomAirport">AIRPORT</button>
-  <button class="secondary" id="fitAll">FIT ALL</button>
-  <button class="secondary" id="toggleObstacles">OBSTACLES</button>
+  <button class="secondary" id="zoomAirport">ZOOM AIRPORT</button>
+  <button class="secondary" id="fitOLS">FIT OLS</button>
  </div>
  <div id="map"></div>
- <div class="panel-body" style="padding:8px">
-  <div class="legend">
-   <span class="swatch" style="background:#ff9f43"></span>Approach
-   <span class="swatch" style="background:#ff5e6c"></span>Take-off
-   <span class="swatch" style="background:#a78bfa"></span>Transitional
-   <span class="swatch" style="background:#27c6d8"></span>Inner horizontal
-   <span class="swatch" style="background:#2bc48a"></span>Conical
-   <span class="swatch" style="background:#fff"></span>Runway
-   <span class="swatch" style="background:#f15c70"></span>Obstacle
-  </div>
- </div>
 </section>
 
-<!-- ANALYTICS -->
+<!-- RIGHT: ANALYTICS -->
 <section class="panel">
- <div class="panel-head"><span>03 / OLS & OBSTACLE ANALYTICS</span><span>▥</span></div>
+ <div class="panel-head"><span>03 / SPATIAL ANALYTICS</span><span>▥</span></div>
  <div class="panel-body">
   <div class="kpis">
-   <div class="kpi"><div class="k">OLS FOOTPRINTS</div><div class="v" id="kSurfaces">0</div><div class="hint">Generated features</div></div>
-   <div class="kpi"><div class="k">ONLINE OBSTACLES</div><div class="v" id="kObstacles">0</div><div class="hint">OSM mapped objects</div></div>
-   <div class="kpi"><div class="k">HEIGHT KNOWN</div><div class="v" id="kKnown">0</div><div class="hint">Mapped object heights</div></div>
-   <div class="kpi"><div class="k">REVIEW CANDIDATES</div><div class="v" id="kFlags">0</div><div class="hint">Preliminary screening only</div></div>
+   <div class="kpi"><div class="k">OLS SURFACES GENERATED</div><div class="v" id="kSurfaces">0</div><div class="hint">Selected surface types</div></div>
+   <div class="kpi"><div class="k">OBSTACLES UPLOADED</div><div class="v" id="kObstacles">0</div><div class="hint">Imported records</div></div>
+   <div class="kpi"><div class="k">SCREENING FLAGS</div><div class="v" id="kFlags">0</div><div class="hint">Above entered reference height</div></div>
+   <div class="kpi"><div class="k">RUNWAY LENGTH</div><div class="v" id="kLength">3,600</div><div class="hint">Metres</div></div>
   </div>
 
-  <div class="section-title">Obstacle data quality</div>
-  <div class="chartbox"><canvas id="qualityChart"></canvas></div>
-  <div class="section-title">Obstacle classification</div>
-  <div class="chartbox"><canvas id="typeChart"></canvas></div>
   <div class="section-title">Surface inventory</div>
-  <div id="surfaceInventory" class="small">No surfaces generated.</div>
+  <div id="surfaceList" class="small">Generate surfaces to populate this section.</div>
 
-  <div class="section-title" style="margin-top:14px">Obstacle screening results</div>
-  <div style="max-height:210px;overflow:auto">
+  <div class="chartbox">
+   <div class="section-title">Surface distribution</div>
+   <canvas id="surfaceChart"></canvas>
+  </div>
+  <div class="chartbox">
+   <div class="section-title">Obstacle height screening</div>
+   <canvas id="obstacleChart"></canvas>
+  </div>
+
+  <div class="section-title">Obstacle screening results</div>
+  <div style="overflow:auto;max-height:190px">
    <table>
-    <thead><tr><th>Object</th><th>Top AMSL</th><th>Result</th></tr></thead>
-    <tbody id="obstacleTable"><tr><td colspan="3">No obstacle data.</td></tr></tbody>
+    <thead><tr><th>Obstacle</th><th>Height</th><th>Screening</th></tr></thead>
+    <tbody id="obstacleRows"><tr><td colspan="3">No obstacle data loaded</td></tr></tbody>
    </table>
   </div>
-  <div class="section-title" style="margin-top:14px">Processing log</div>
-  <div id="log">Dashboard initialized. Loading global airport catalogue...</div>
+
+  <div class="section-title" style="margin-top:15px">Processing log</div>
+  <div id="log">Dashboard initialized. Load or edit the runway parameters, then generate OLS footprints.</div>
 
   <div class="notice" style="margin-top:12px">
-   SCREENING LIMITATION: The current prototype checks mapped obstacle points against generated plan-view footprints and a user-entered reference elevation. It does not calculate the actual ICAO sloping surface elevation at each obstacle location. Unknown heights are never treated as zero. This is not an approved obstacle survey or aeronautical safeguarding assessment.
+   IMPORTANT: This prototype creates configurable plan-view footprints and performs a simple reference-height screening. It does not calculate certified sloping OLS height profiles, terrain penetration, obstacle assessment surfaces, OFS/OES or safeguarding decisions. Use current ICAO Annex 14, the Gambia AIP and competent aeronautical authority validation for formal work.
   </div>
  </div>
 </section>
@@ -296,584 +245,401 @@ footer{padding:10px;text-align:center;font-size:9px;color:#8298b1;border-top:1px
 
 <script>
 /* ==========================================================
- GLOBAL AIRPORT OLS DASHBOARD
- Data sources:
- OurAirports airports.csv and runways.csv
- OpenStreetMap Overpass API
- OpenTopoData SRTM90m elevation API
+   GBoS GEOAI — GAMBIA AIRPORT OLS RESEARCH DASHBOARD
+   Configurable geometry prototype. Not a certified OLS tool.
 ========================================================== */
 
-const $=id=>document.getElementById(id);
-const logBox=$('log');
+const $ = id => document.getElementById(id);
+const logBox = $('log');
 
-function log(s){
- logBox.textContent='['+new Date().toLocaleTimeString()+'] '+s+'\n'+logBox.textContent;
+function log(message){
+ const t = new Date().toLocaleTimeString();
+ logBox.textContent = `[${t}] ${message}\n` + logBox.textContent;
 }
-function progress(v){$('loadingProgress').style.width=Math.max(0,Math.min(100,v))+'%';}
-function setStatus(s){$('mapStatus').textContent=s;}
-function num(id){return Number($(id).value);}
-function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 
-const AIRPORT_URLS=[
- 'https://davidmegginson.github.io/ourairports-data/airports.csv',
- 'https://raw.githubusercontent.com/davidmegginson/ourairports-data/main/airports.csv'
-];
-const RUNWAY_URLS=[
- 'https://davidmegginson.github.io/ourairports-data/runways.csv',
- 'https://raw.githubusercontent.com/davidmegginson/ourairports-data/main/runways.csv'
-];
-const OVERPASS=[
- 'https://overpass-api.de/api/interpreter',
- 'https://overpass.kumi.systems/api/interpreter',
- 'https://overpass.nchc.org.tw/api/interpreter'
-];
+const map = L.map('map',{preferCanvas:true}).setView([13.338,-16.652],13);
 
-let airports=[],runways=[],selectedAirport=null,selectedRunway=null;
-let obstacleData=[],olsFeatures=[],screening=[];
-let airportMarker=null;
-let qualityChart=null,typeChart=null;
-
-const map=L.map('map',{preferCanvas:true}).setView([50.8,7.5],4);
-const basemaps={
- street:L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}),
- sat:L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'© Esri'}),
- terrain:L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{maxZoom:17,attribution:'© OpenTopoMap'})
+const baseLayers = {
+ street:L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+  maxZoom:19,attribution:'© OpenStreetMap contributors'
+ }),
+ sat:L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{
+  maxZoom:19,attribution:'Tiles © Esri'
+ }),
+ terrain:L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{
+  maxZoom:17,attribution:'© OpenTopoMap'
+ })
 };
-basemaps.street.addTo(map);
-$('basemap').onchange=e=>{
- Object.values(basemaps).forEach(x=>map.removeLayer(x));
- basemaps[e.target.value].addTo(map);
+baseLayers.street.addTo(map);
+$('basemap').addEventListener('change',e=>{
+ Object.values(baseLayers).forEach(l=>map.removeLayer(l));
+ baseLayers[e.target.value].addTo(map);
+});
+
+let surfaceLayer=L.featureGroup().addTo(map);
+let runwayLayer=L.featureGroup().addTo(map);
+let obstacleLayer=L.featureGroup().addTo(map);
+let generatedFeatures=[];
+let obstacles=[];
+let surfaceChart=null, obstacleChart=null;
+let lastScreening=[];
+
+const surfaceColors={
+ 'Approach':'#ff9f43',
+ 'Take-off climb':'#ff5e6c',
+ 'Transitional':'#a78bfa',
+ 'Inner horizontal':'#27c6d8',
+ 'Conical':'#2bc48a'
 };
 
-const runwayLayer=L.featureGroup().addTo(map);
-const surfaceLayer=L.featureGroup().addTo(map);
-const obstacleLayer=L.featureGroup().addTo(map);
-const airportLayer=L.featureGroup().addTo(map);
-
-async function fetchText(urls){
- let lastError;
- for(const url of urls){
-  try{
-   const r=await fetch(url,{cache:'no-store'});
-   if(!r.ok)throw new Error('HTTP '+r.status);
-   return await r.text();
-  }catch(e){lastError=e;log('Source attempt failed: '+url+' — '+e.message);}
- }
- throw lastError||new Error('All source URLs failed.');
+function num(id){return Number($(id).value)}
+function validPositive(id){
+ const v=num(id);
+ if(!Number.isFinite(v)||v<=0) throw new Error('Please enter a positive value for '+id);
+ return v;
 }
 
-// CSV parser that handles commas inside quoted fields.
-function parseCSV(text){
- const rows=[];let row=[],field='',quoted=false;
- for(let i=0;i<text.length;i++){
-  const c=text[i],next=text[i+1];
-  if(c==='"'&&quoted&&next==='"'){field+='"';i++;}
-  else if(c==='"')quoted=!quoted;
-  else if(c===','&&!quoted){row.push(field);field='';}
-  else if((c==='\n'||c==='\r')&&!quoted){
-   if(c==='\r'&&next==='\n')i++;
-   row.push(field);field='';
-   if(row.some(v=>v!==''))rows.push(row);
-   row=[];
-  }else field+=c;
+// Local metric coordinates around the airport reference point.
+// Suitable for this visualization only; production geodesy should use
+// a validated projected CRS and authoritative runway survey coordinates.
+function project(lat,lon,originLat,originLon){
+ const R=6378137;
+ return {
+  x:(lon-originLon)*Math.PI/180*R*Math.cos(originLat*Math.PI/180),
+  y:(lat-originLat)*Math.PI/180*R
+ };
+}
+function unproject(x,y,originLat,originLon){
+ const R=6378137;
+ return [
+  originLon+x/(R*Math.cos(originLat*Math.PI/180))*180/Math.PI,
+  originLat+y/R*180/Math.PI
+ ];
+}
+function polygonFeature(name,coords,properties={}){
+ return {
+  type:'Feature',
+  properties:{surface:name,...properties},
+  geometry:{type:'Polygon',coordinates:[coords]}
+ };
+}
+function rectangleAlong(start,end,halfWidth,extension=0){
+ const dx=end.x-start.x,dy=end.y-start.y;
+ const len=Math.hypot(dx,dy);
+ const ux=dx/len,uy=dy/len,nx=-uy,ny=ux;
+ const a={x:start.x-ux*extension,y:start.y-uy*extension};
+ const b={x:end.x+ux*extension,y:end.y+uy*extension};
+ return [
+  [a.x+nx*halfWidth,a.y+ny*halfWidth],
+  [b.x+nx*halfWidth,b.y+ny*halfWidth],
+  [b.x-nx*halfWidth,b.y-ny*halfWidth],
+  [a.x-nx*halfWidth,a.y-ny*halfWidth],
+  [a.x+nx*halfWidth,a.y+ny*halfWidth]
+ ];
+}
+function trapezoidFromThreshold(threshold,outward,innerWidth,outerWidth,length,originLat,originLon){
+ const dx=outward.x-threshold.x,dy=outward.y-threshold.y;
+ const len=Math.hypot(dx,dy),ux=dx/len,uy=dy/len,nx=-uy,ny=ux;
+ const end={x:threshold.x+ux*length,y:threshold.y+uy*length};
+ const points=[
+  {x:threshold.x+nx*innerWidth/2,y:threshold.y+ny*innerWidth/2},
+  {x:end.x+nx*outerWidth/2,y:end.y+ny*outerWidth/2},
+  {x:end.x-nx*outerWidth/2,y:end.y-ny*outerWidth/2},
+  {x:threshold.x-nx*innerWidth/2,y:threshold.y-ny*innerWidth/2}
+ ];
+ return points.map(p=>unproject(p.x,p.y,originLat,originLon)).concat([
+  unproject(points[0].x,points[0].y,originLat,originLon)
+ ]);
+}
+function circleCoords(cx,cy,r,originLat,originLon,n=100){
+ const coords=[];
+ for(let i=0;i<=n;i++){
+  const a=2*Math.PI*i/n;
+  coords.push(unproject(cx+Math.cos(a)*r,cy+Math.sin(a)*r,originLat,originLon));
  }
- row.push(field);if(row.some(v=>v!==''))rows.push(row);
- if(!rows.length)return [];
- const headers=rows.shift().map(x=>x.trim());
- return rows.map(r=>{
-  const o={};headers.forEach((h,i)=>o[h]=r[i]??'');return o;
- });
+ return coords;
 }
-function asNum(v){const n=Number(v);return Number.isFinite(n)?n:null;}
-function ftm(v){const n=asNum(v);return n===null?null:n*.3048;}
-
-async function loadAirports(){
- try{
-  $('connection').textContent='LOADING DATA';
-  log('Downloading global airport catalogue...');
-  progress(10);
-  const text=await fetchText(AIRPORT_URLS);
-  airports=parseCSV(text).filter(a=>
-   asNum(a.latitude_deg)!==null&&asNum(a.longitude_deg)!==null
-  );
-  progress(55);
-  log('Loaded '+airports.length.toLocaleString()+' airport records.');
-  $('airportCount').textContent=airports.length.toLocaleString()+' airports available in global catalogue.';
-  $('connection').textContent='AIRPORTS READY';
-  buildAirportOptions();
-  await loadRunways();
-  applyAirportFilters();
-  progress(100);
-  log('Global airport and runway catalogues are ready.');
- }catch(e){
-  $('connection').textContent='DATA ERROR';
-  $('airportCount').textContent='Could not load airport catalogue: '+e.message;
-  log('Airport catalogue error: '+e.message);
-  alert('Could not download the global airport catalogue. Check your internet connection or try again.');
- }
+function addSurface(feature){
+ generatedFeatures.push(feature);
+ const name=feature.properties.surface;
+ L.geoJSON(feature,{
+  style:{
+   color:surfaceColors[name]||'#fff',
+   weight:1.5,
+   opacity:.9,
+   fillColor:surfaceColors[name]||'#fff',
+   fillOpacity:.16,
+   dashArray:name==='Transitional'?'5,5':null
+  },
+  onEachFeature:(f,l)=>{
+   l.bindPopup(`<b>${name}</b><br>Prototype geometry<br><small>Not for operational safeguarding</small>`);
+  }
+ }).addTo(surfaceLayer);
 }
-async function loadRunways(){
- log('Downloading worldwide runway records...');
- const text=await fetchText(RUNWAY_URLS);
- runways=parseCSV(text);
- log('Loaded '+runways.length.toLocaleString()+' runway records.');
-}
-function buildAirportOptions(){
- const dl=$('airportOptions');dl.innerHTML='';
- const codes=['EDDS','EDDF','EBBR','EDDM','EDDH','EDDL','DGAA','DNMM','DIAP','GOBD','DXXX','GBYD','GUCY','GFLL','GLRB','GABS'];
- codes.forEach(code=>{
-  const a=airports.find(x=>x.ident===code||x.gps_code===code||x.iata_code===code);
-  if(a){const op=document.createElement('option');op.value=a.ident+' — '+a.name;dl.appendChild(op);}
- });
-}
-function getRegion(a){
- const c=(a.iso_country||'').toUpperCase();
- if(['DE'].includes(c))return 'germany';
- if(['BE'].includes(c))return 'belgium';
- if(['FR','NL','LU','CH','AT','IT','ES','PT','GB','IE','DK','SE','NO','FI','PL','CZ','SK','HU','RO','BG','GR'].includes(c))return 'europe';
- if(['GM','SN','GN','SL','LR','CI','GH','TG','BJ','NG','BF','ML','NE','MR','CV'].includes(c))return 'westafrica';
- return 'other';
-}
-function applyAirportFilters(){
- const q=$('airportSearch').value.toLowerCase().trim();
- const region=$('region').value,type=$('airportType').value;
- let found=airports.filter(a=>{
-  if(type!=='all'&&a.type!==type)return false;
-  if(region!=='all'&&getRegion(a)!==region)return false;
-  if(!q)return ['large_airport','medium_airport'].includes(a.type);
-  return [a.ident,a.name,a.municipality,a.iata_code,a.gps_code].some(v=>(v||'').toLowerCase().includes(q));
- }).slice(0,500);
- const sel=$('airportSelect');sel.innerHTML='';
- found.forEach(a=>{
-  const op=document.createElement('option');
-  op.value=a.ident;
-  op.textContent=(a.ident||a.gps_code||a.iata_code||'NO CODE')+' | '+a.name+' | '+(a.iso_country||'');
-  sel.appendChild(op);
- });
- $('airportCount').textContent=found.length+' matching airports shown. Search to narrow the global catalogue.';
- if(found.length){
-  const preferred=found.find(a=>a.ident==='EDDS')||found[0];
-  sel.value=preferred.ident;
- }
-}
-$('airportSearch').addEventListener('input',applyAirportFilters);
-$('region').addEventListener('change',applyAirportFilters);
-$('airportType').addEventListener('change',applyAirportFilters);
-
-function getAirportFromSearch(){
- const q=$('airportSearch').value.toLowerCase().trim();
- if(!q)return null;
- return airports.find(a=>
-  [a.ident,a.gps_code,a.iata_code,a.name,a.municipality].some(v=>(v||'').toLowerCase()===q)
- )||airports.find(a=>
-  [a.ident,a.gps_code,a.iata_code].some(v=>(v||'').toLowerCase()===q)
- );
-}
-function loadSelectedAirport(){
- const id=$('airportSelect').value;
- const searchMatch=getAirportFromSearch();
- const a=searchMatch||airports.find(x=>x.ident===id);
- if(!a){alert('Select an airport from the matching results.');return;}
- selectedAirport=a;
- $('icao').value=a.ident||a.gps_code||'';
- $('country').value=a.iso_country||'';
- $('airportName').value=a.name||'';
- $('airportLat').value=a.latitude_deg;
- $('airportLon').value=a.longitude_deg;
- $('airportElev').value=ftm(a.elevation_ft)??'Unknown';
- $('airportClass').value=a.type||'Unknown';
- airportLayer.clearLayers();
- if(airportMarker)map.removeLayer(airportMarker);
- airportMarker=L.marker([Number(a.latitude_deg),Number(a.longitude_deg)]).addTo(map)
-  .bindPopup('<b>'+esc(a.name)+'</b><br>'+esc(a.ident)+'<br>'+esc(a.iso_country));
- map.setView([Number(a.latitude_deg),Number(a.longitude_deg)],13);
- setStatus(a.ident+' selected');
- loadRunwaysForAirport(a);
- log('Selected airport: '+a.name+' ('+a.ident+').');
-}
-function loadRunwaysForAirport(a){
- const rows=runways.filter(r=>
-  String(r.airport_ident||'').toUpperCase()===String(a.ident||'').toUpperCase()||
-  String(r.airport_ref||'')===String(a.id||'')
- );
- const valid=rows.filter(r=>
-  asNum(r.le_latitude_deg)!==null&&asNum(r.le_longitude_deg)!==null&&
-  asNum(r.he_latitude_deg)!==null&&asNum(r.he_longitude_deg)!==null
- );
- const sel=$('runwaySelect');sel.innerHTML='';
- if(!valid.length){
-  sel.innerHTML='<option value="">No runway with both threshold coordinates in catalogue</option>';
-  selectedRunway=null;$('runwayInfo').textContent='Runway geometry is unavailable from the selected catalogue record.';
-  runwayLayer.clearLayers();return;
- }
- valid.forEach((r,i)=>{
-  const op=document.createElement('option');op.value=String(i);
-  op.textContent=(r.le_ident||'LE')+' / '+(r.he_ident||'HE')+' | '+(ftm(r.length_ft)||'Unknown')+' m | '+(r.surface||'Unknown');
-  sel.appendChild(op);
- });
- sel._rows=valid;
- sel.value='0';
- selectRunway();
-}
-function selectRunway(){
- const sel=$('runwaySelect'),rows=sel._rows||[];
- const r=rows[Number(sel.value)];
- if(!r)return;
- selectedRunway=r;
- $('rwyLength').value=ftm(r.length_ft)??'Unknown';
- $('rwyWidth').value=ftm(r.width_ft)??'Unknown';
- $('elevA').value=ftm(r.le_elevation_ft)??'Unknown';
- $('elevB').value=ftm(r.he_elevation_ft)??'Unknown';
- $('runwayInfo').textContent='Runway '+(r.le_ident||'LE')+'/'+(r.he_ident||'HE')+
-  ' • Surface: '+(r.surface||'Not specified')+' • Closed: '+(r.closed||'0');
- drawRunway();
- map.fitBounds(L.latLngBounds(
-  [Number(r.le_latitude_deg),Number(r.le_longitude_deg)],
-  [Number(r.he_latitude_deg),Number(r.he_longitude_deg)]
- ).pad(.7));
- log('Selected runway '+(r.le_ident||'LE')+'/'+(r.he_ident||'HE')+'.');
-}
-$('loadAirport').onclick=loadSelectedAirport;
-$('runwaySelect').onchange=selectRunway;
-
 function drawRunway(){
  runwayLayer.clearLayers();
- if(!selectedRunway)return;
- const r=selectedRunway;
- const a=[Number(r.le_latitude_deg),Number(r.le_longitude_deg)];
- const b=[Number(r.he_latitude_deg),Number(r.he_longitude_deg)];
- L.polyline([a,b],{color:'#fff',weight:7,opacity:.95}).addTo(runwayLayer)
-  .bindPopup('Runway '+(r.le_ident||'LE')+'/'+(r.he_ident||'HE'));
- L.circleMarker(a,{radius:5,color:'#fff',fillColor:'#21c7d8',fillOpacity:1}).addTo(runwayLayer).bindTooltip(r.le_ident||'Threshold A');
- L.circleMarker(b,{radius:5,color:'#fff',fillColor:'#ffae42',fillOpacity:1}).addTo(runwayLayer).bindTooltip(r.he_ident||'Threshold B');
-}
-
-// Local metric coordinates for map footprint construction.
-function project(lat,lon,lat0,lon0){
- const R=6378137;
- return {x:(lon-lon0)*Math.PI/180*R*Math.cos(lat0*Math.PI/180),y:(lat-lat0)*Math.PI/180*R};
-}
-function unproject(x,y,lat0,lon0){
- const R=6378137;
- return [lon0+x/(R*Math.cos(lat0*Math.PI/180))*180/Math.PI,lat0+y/R*180/Math.PI];
-}
-function circleCoords(cx,cy,r,lat0,lon0,n=100){
- const out=[];
- for(let i=0;i<=n;i++){
-  const a=i*2*Math.PI/n;out.push(unproject(cx+Math.cos(a)*r,cy+Math.sin(a)*r,lat0,lon0));
- }
- return out;
-}
-function addSurface(name,coords,props={}){
- const f={type:'Feature',properties:{surface:name,...props},
-  geometry:{type:'Polygon',coordinates:coords}};
- olsFeatures.push(f);
- const colors={Approach:'#ff9f43','Take-off climb':'#ff5e6c',Transitional:'#a78bfa','Inner horizontal':'#27c6d8',Conical:'#2bc48a'};
- L.geoJSON(f,{style:{color:colors[name],weight:1.5,fillColor:colors[name],fillOpacity:.15},
-  onEachFeature:(feature,layer)=>layer.bindPopup('<b>'+name+'</b><br>Illustrative footprint')}).addTo(surfaceLayer);
-}
-function trapezoid(thr,other,inner,outer,length,lat0,lon0){
- const dx=thr.x-other.x,dy=thr.y-other.y,len=Math.hypot(dx,dy);
- const ux=dx/len,uy=dy/len,nx=-uy,ny=ux;
- const end={x:thr.x+ux*length,y:thr.y+uy*length};
- const pts=[
-  {x:thr.x+nx*inner/2,y:thr.y+ny*inner/2},
-  {x:end.x+nx*outer/2,y:end.y+ny*outer/2},
-  {x:end.x-nx*outer/2,y:end.y-ny*outer/2},
-  {x:thr.x-nx*inner/2,y:thr.y-ny*inner/2}
- ];
- const ring=pts.map(p=>unproject(p.x,p.y,lat0,lon0));ring.push(ring[0]);
- return [ring];
+ const a=[num('lat14'),num('lon14')],b=[num('lat32'),num('lon32')];
+ L.polyline([a,b],{color:'#ffffff',weight:7,opacity:.95}).addTo(runwayLayer)
+  .bindPopup('Runway '+$('rwy').value+' • '+num('length')+' m');
+ L.circleMarker(a,{radius:5,color:'#fff',fillColor:'#00c8e0',fillOpacity:1}).addTo(runwayLayer).bindTooltip('THR 14');
+ L.circleMarker(b,{radius:5,color:'#fff',fillColor:'#ffb347',fillOpacity:1}).addTo(runwayLayer).bindTooltip('THR 32');
 }
 function generateOLS(){
- if(!selectedAirport||!selectedRunway){alert('Load an airport and select a runway first.');return;}
- const r=selectedRunway;
- const latA=Number(r.le_latitude_deg),lonA=Number(r.le_longitude_deg);
- const latB=Number(r.he_latitude_deg),lonB=Number(r.he_longitude_deg);
- const lat0=(latA+latB)/2,lon0=(lonA+lonB)/2;
- const A=project(latA,lonA,lat0,lon0),B=project(latB,lonB,lat0,lon0);
- const length=Math.hypot(B.x-A.x,B.y-A.y);
- if(length<100||length>10000){alert('Runway coordinates are not suitable for footprint generation.');return;}
- olsFeatures=[];surfaceLayer.clearLayers();
- const mid={x:(A.x+B.x)/2,y:(A.y+B.y)/2};
- const width=ftm(r.width_ft)||45;
- const selections=[];
- if($('approach').checked){
-  const al=Number($('appLength').value),iw=Number($('appWidth').value),ow=Number($('appOuter').value);
-  if(al>0&&iw>0&&ow>0){
-   addSurface('Approach',trapezoid(A,B,iw,ow,al,lat0,lon0),{end:r.le_ident||'A',length_m:al});
-   addSurface('Approach',trapezoid(B,A,iw,ow,al,lat0,lon0),{end:r.he_ident||'B',length_m:al});
-  }
- }
- if($('takeoff').checked){
-  const tl=Number($('toLength').value),iw=Number($('toWidth').value),ow=Number($('toOuter').value);
-  if(tl>0&&iw>0&&ow>0){
-   addSurface('Take-off climb',trapezoid(A,B,iw,ow,tl,lat0,lon0),{end:r.le_ident||'A',length_m:tl});
-   addSurface('Take-off climb',trapezoid(B,A,iw,ow,tl,lat0,lon0),{end:r.he_ident||'B',length_m:tl});
-  }
- }
- if($('transitional').checked){
-  const tw=Number($('transWidth').value);
-  if(tw>0){
-   const dx=B.x-A.x,dy=B.y-A.y,len=Math.hypot(dx,dy),nx=-dy/len,ny=dx/len;
-   const pts=[
-    unproject(A.x+nx*(width/2+tw),A.y+ny*(width/2+tw),lat0,lon0),
-    unproject(B.x+nx*(width/2+tw),B.y+ny*(width/2+tw),lat0,lon0),
-    unproject(B.x-nx*(width/2+tw),B.y-ny*(width/2+tw),lat0,lon0),
-    unproject(A.x-nx*(width/2+tw),A.y-ny*(width/2+tw),lat0,lon0)
-   ];pts.push(pts[0]);
-   addSurface('Transitional',[pts],{buffer_m:tw});
-  }
- }
- if($('horizontal').checked){
-  const rad=Number($('ihRadius').value);
-  if(rad>0)addSurface('Inner horizontal',[circleCoords(mid.x,mid.y,rad,lat0,lon0)],{radius_m:rad});
- }
- if($('conical').checked){
-  const r1=Number($('ihRadius').value),r2=Number($('conRadius').value);
-  if(r1>0&&r2>r1){
-   const outer=circleCoords(mid.x,mid.y,r2,lat0,lon0);
-   const inner=circleCoords(mid.x,mid.y,r1,lat0,lon0).reverse();
-   addSurface('Conical',[outer,inner],{outer_radius_m:r2,inner_radius_m:r1});
-  }
- }
- $('kSurfaces').textContent=olsFeatures.length;
- $('surfaceInventory').innerHTML=olsFeatures.map(f=>
-  '<div>• '+esc(f.properties.surface)+' '+(f.properties.end||'')+'</div>'
- ).join('');
- const group=L.featureGroup([surfaceLayer,runwayLayer]);
- if(group.getLayers().length)map.fitBounds(group.getBounds().pad(.12));
- setStatus(olsFeatures.length+' OLS footprints');
- log('Generated '+olsFeatures.length+' configurable surface footprint features.');
- log('Runway length from threshold coordinates: '+Math.round(length)+' m. Catalogue length: '+(ftm(r.length_ft)||'unknown')+' m.');
- runScreening();
-}
-
-// ONLINE OSM OBSTACLE RETRIEVAL
-function buildOverpassQuery(lat,lon,radius){
- const selectors=[];
- if($('getBuildings').checked)selectors.push(`nwr(around:${radius},${lat},${lon})["building"];`);
- if($('getTowers').checked){
-  selectors.push(`nwr(around:${radius},${lat},${lon})["man_made"~"^(tower|mast|chimney)$"];`);
-  selectors.push(`nwr(around:${radius},${lat},${lon})["communication"="mast"];`);
- }
- if($('getPower').checked)selectors.push(`nwr(around:${radius},${lat},${lon})["power"~"^(tower|pole)$"];`);
- if($('getCranes').checked){
-  selectors.push(`nwr(around:${radius},${lat},${lon})["man_made"="crane"];`);
-  selectors.push(`nwr(around:${radius},${lat},${lon})["construction"="crane"];`);
- }
- if(!selectors.length)throw new Error('Select at least one obstacle category.');
- return `[out:json][timeout:60];(${selectors.join('')});out center tags;`;
-}
-function objectHeight(tags){
- const raw=tags.height||tags['building:height']||tags['est_height'];
- if(raw){
-  const n=parseFloat(String(raw).replace(',','.'));
-  if(Number.isFinite(n)){
-   if(/ft|feet|foot/i.test(raw))return {height:n*.3048,source:'OSM height tag'};
-   return {height:n,source:'OSM height tag'};
-  }
- }
- const levels=Number(tags['building:levels']);
- if(Number.isFinite(levels)&&levels>0)return {height:levels*3,source:'Estimated from building levels'};
- return {height:null,source:'Unknown'};
-}
-function classify(tags){
- if(tags.building)return 'Building';
- if(tags.man_made==='tower'||tags.man_made==='mast'||tags.communication==='mast')return 'Tower / Mast';
- if(tags.man_made==='chimney')return 'Chimney';
- if(tags.power==='tower'||tags.power==='pole')return 'Power infrastructure';
- if(tags.man_made==='crane'||tags.construction==='crane')return 'Crane';
- return 'Other mapped object';
-}
-function elementCoordinates(e){
- if(e.type==='node'&&Number.isFinite(e.lat)&&Number.isFinite(e.lon))return [e.lon,e.lat];
- if(e.center&&Number.isFinite(e.center.lat)&&Number.isFinite(e.center.lon))return [e.center.lon,e.center.lat];
- return null;
-}
-async function queryOverpass(query){
- let last;
- for(const endpoint of OVERPASS){
-  try{
-   log('Querying Overpass endpoint: '+endpoint);
-   const r=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body:'data='+encodeURIComponent(query)});
-   if(!r.ok)throw new Error('HTTP '+r.status);
-   return await r.json();
-  }catch(e){last=e;log('Overpass endpoint failed: '+e.message);}
- }
- throw last||new Error('All Overpass endpoints failed.');
-}
-async function fetchObstacles(){
- if(!selectedAirport){alert('Select an airport first.');return;}
- const lat=Number(selectedAirport.latitude_deg),lon=Number(selectedAirport.longitude_deg);
- const radius=Number($('radius').value);
- $('fetchObstacles').disabled=true;$('obstacleStatus').textContent='Querying online mapping data...';
  try{
-  const query=buildOverpassQuery(lat,lon,radius);
-  const data=await queryOverpass(query);
-  const seen=new Set();obstacleData=[];
-  (data.elements||[]).forEach(e=>{
-   const key=e.type+'/'+e.id;if(seen.has(key))return;seen.add(key);
-   const c=elementCoordinates(e);if(!c)return;
-   const tags=e.tags||{},h=objectHeight(tags);
-   obstacleData.push({
-    id:key,name:tags.name||tags['ref']||classify(tags)+' '+e.id,
-    type:classify(tags),coordinates:c,height_m:h.height,
-    heightSource:h.source,terrain_m:null,topAMSL:null,
-    osmUrl:'https://www.openstreetmap.org/'+e.type+'/'+e.id
-   });
-  });
-  obstacleLayer.clearLayers();
-  obstacleData.forEach(o=>{
-   L.circleMarker([o.coordinates[1],o.coordinates[0]],{
-    radius:5,color:'#fff',weight:1,fillColor:'#f15c70',fillOpacity:.9
-   }).addTo(obstacleLayer).bindPopup(
-    '<b>'+esc(o.name)+'</b><br>'+esc(o.type)+
-    '<br>Height: '+(o.height_m===null?'Unknown':o.height_m.toFixed(1)+' m')+
-    '<br>Source: '+esc(o.heightSource)+
-    '<br><a href="'+o.osmUrl+'" target="_blank">OpenStreetMap object</a>'
-   );
-  });
-  $('kObstacles').textContent=obstacleData.length;
-  $('obstacleStatus').textContent=obstacleData.length+' mapped objects retrieved. Terrain elevations pending.';
-  log('Retrieved '+obstacleData.length+' mapped obstacle candidates within '+radius+' m.');
-  updateCharts();runScreening();
- }catch(e){
-  $('obstacleStatus').textContent='Online extraction failed: '+e.message;
-  log('Obstacle retrieval error: '+e.message);
-  alert('Could not retrieve online obstacles. Try again later or use another Overpass endpoint.');
- }finally{$('fetchObstacles').disabled=false;}
-}
-$('fetchObstacles').onclick=fetchObstacles;
+  const lat14=num('lat14'),lon14=num('lon14'),lat32=num('lat32'),lon32=num('lon32');
+  const length=validPositive('length'),width=validPositive('width');
+  if(Math.abs(lat14)>90||Math.abs(lat32)>90||Math.abs(lon14)>180||Math.abs(lon32)>180)
+   throw new Error('Invalid runway coordinates.');
+  const originLat=(lat14+lat32)/2,originLon=(lon14+lon32)/2;
+  const p14=project(lat14,lon14,originLat,originLon);
+  const p32=project(lat32,lon32,originLat,originLon);
+  const dist=Math.hypot(p32.x-p14.x,p32.y-p14.y);
+  if(dist<500||dist>10000) throw new Error('Runway threshold coordinates appear inconsistent. Check the runway coordinates.');
+  surfaceLayer.clearLayers();generatedFeatures=[];
+  drawRunway();
 
-// TERRAIN ELEVATION RETRIEVAL
-async function retrieveTerrain(){
- if(!obstacleData.length){alert('Fetch online obstacles first.');return;}
- $('terrainButton').disabled=true;
- $('obstacleStatus').textContent='Retrieving SRTM terrain elevations...';
- try{
-  // Public OpenTopoData API limit: 100 locations per request.
-  // Limit the first pass to 100 objects and clearly report the remainder.
-  const batch=obstacleData.slice(0,100);
-  const locations=batch.map(o=>o.coordinates[1]+','+o.coordinates[0]).join('|');
-  const url='https://api.opentopodata.org/v1/srtm90m?locations='+encodeURIComponent(locations);
-  const response=await fetch(url);
-  if(!response.ok)throw new Error('Elevation API HTTP '+response.status);
-  const data=await response.json();
-  if(data.status!=='OK')throw new Error(data.error||'Elevation API did not return OK.');
-  data.results.forEach((r,i)=>{
-   const o=batch[i];o.terrain_m=r.elevation;
-   if(o.terrain_m!==null&&o.height_m!==null)o.topAMSL=o.terrain_m+o.height_m;
-  });
-  $('obstacleStatus').textContent='Terrain elevations retrieved for '+data.results.length+
-   ' objects. '+Math.max(0,obstacleData.length-batch.length)+' objects not sampled in this pass.';
-  log('Retrieved terrain elevations for '+data.results.length+' obstacle locations using SRTM90m.');
-  log('Top AMSL was derived only where both terrain elevation and mapped object height were available.');
-  runScreening();updateCharts();
- }catch(e){
-  $('obstacleStatus').textContent='Terrain retrieval failed: '+e.message;
-  log('Terrain elevation error: '+e.message);
-  alert('Terrain retrieval failed: '+e.message);
- }finally{$('terrainButton').disabled=false;}
-}
-$('terrainButton').onclick=retrieveTerrain;
+  const selections=[
+   ['approach','Approach'],['takeoff','Take-off climb'],
+   ['transitional','Transitional'],['horizontal','Inner horizontal'],
+   ['conical','Conical']
+  ];
+  const enabled=selections.filter(s=>$(s[0]).checked).map(s=>s[1]);
 
-// PRELIMINARY SPATIAL SCREENING
-function runScreening(){
- const ref=num('refHeight');
- screening=obstacleData.map(o=>{
-  let surfaces=[];
-  if(olsFeatures.length&&o.coordinates){
-   const pt=turf.point(o.coordinates);
-   olsFeatures.forEach(f=>{
-    try{if(turf.booleanPointInPolygon(pt,f))surfaces.push(f.properties.surface);}catch(e){}
+  if($('approach').checked){
+   const appLen=validPositive('appLength');
+   const iw=validPositive('appWidth'),ow=validPositive('appOuter');
+   const ends=[
+    {thr:p14,out:{x:p14.x-(p32.x-p14.x),y:p14.y-(p32.y-p14.y)},id:'14'},
+    {thr:p32,out:{x:p32.x-(p14.x-p32.x),y:p32.y-(p14.y-p32.y)},id:'32'}
+   ];
+   ends.forEach(e=>{
+    const coords=trapezoidFromThreshold(e.thr,e.out,iw,ow,appLen,originLat,originLon);
+    addSurface(polygonFeature('Approach',coords,{runwayEnd:e.id,configuredLength_m:appLen}));
    });
   }
-  const inside=surfaces.length>0;
-  const known=o.topAMSL!==null&&Number.isFinite(o.topAMSL);
-  // This is NOT a sloping ICAO surface penetration calculation.
-  const flagged=inside&&known&&o.topAMSL>ref;
-  let result='Outside footprints';
-  if(inside&&!known)result='Height unknown';
-  if(inside&&known&&!flagged)result='Below reference';
-  if(flagged)result='Review candidate';
-  return {...o,surfaces,inside,known,flagged,result};
+
+  if($('takeoff').checked){
+   const toLen=validPositive('toLength');
+   const iw=validPositive('toWidth'),ow=validPositive('toOuter');
+   [
+    {thr:p14,out:{x:p14.x-(p32.x-p14.x),y:p14.y-(p32.y-p14.y)},id:'14'},
+    {thr:p32,out:{x:p32.x-(p14.x-p32.x),y:p32.y-(p14.y-p32.y)},id:'32'}
+   ].forEach(e=>{
+    const coords=trapezoidFromThreshold(e.thr,e.out,iw,ow,toLen,originLat,originLon);
+    addSurface(polygonFeature('Take-off climb',coords,{runwayEnd:e.id,configuredLength_m:toLen}));
+   });
+  }
+
+  if($('transitional').checked){
+   const tw=validPositive('transWidth');
+   const coords=rectangleAlong(p14,p32,width/2+tw,0)
+    .map(p=>unproject(p[0],p[1],originLat,originLon));
+   coords.push(coords[0]);
+   addSurface(polygonFeature('Transitional',coords,{configuredBuffer_m:tw}));
+   // Opposite-side footprint is included by the polygon above.
+  }
+
+  if($('horizontal').checked){
+   const r=validPositive('ihRadius');
+   addSurface(polygonFeature('Inner horizontal',
+    circleCoords((p14.x+p32.x)/2,(p14.y+p32.y)/2,r,originLat,originLon),
+    {configuredRadius_m:r}));
+  }
+
+  if($('conical').checked){
+   const r1=validPositive('ihRadius'),r2=validPositive('conRadius');
+   if(r2<=r1) throw new Error('Conical outer radius must be greater than inner horizontal radius.');
+   const outer=circleCoords((p14.x+p32.x)/2,(p14.y+p32.y)/2,r2,originLat,originLon);
+   const inner=circleCoords((p14.x+p32.x)/2,(p14.y+p32.y)/2,r1,originLat,originLon).reverse();
+   const f={
+    type:'Feature',properties:{surface:'Conical',configuredOuterRadius_m:r2},
+    geometry:{type:'Polygon',coordinates:[outer,inner]}
+   };
+   addSurface(f);
+  }
+
+  $('kSurfaces').textContent=generatedFeatures.length;
+  $('kLength').textContent=length.toLocaleString();
+  $('mapStatus').textContent=generatedFeatures.length+' footprints generated';
+  $('surfaceList').innerHTML=generatedFeatures.map((f,i)=>
+   `<div class="legend-row"><span class="swatch" style="background:${surfaceColors[f.properties.surface]}"></span>${f.properties.surface} ${f.properties.runwayEnd||''}</div>`
+  ).join('');
+  updateSurfaceChart();
+  const all= L.featureGroup([surfaceLayer,runwayLayer]);
+  map.fitBounds(all.getBounds().pad(.12));
+  log('Generated '+generatedFeatures.length+' configurable OLS footprint features.');
+  log('Runway reference distance from entered coordinates: '+Math.round(dist)+' m. Entered runway length: '+length+' m.');
+  log('All generated geometries are illustrative plan-view footprints.');
+ }catch(e){
+  log('ERROR: '+e.message);alert(e.message);
+ }
+}
+
+function updateSurfaceChart(){
+ const counts={};
+ generatedFeatures.forEach(f=>{
+  counts[f.properties.surface]=(counts[f.properties.surface]||0)+1;
  });
- $('kKnown').textContent=obstacleData.filter(o=>o.height_m!==null).length;
- $('kFlags').textContent=screening.filter(o=>o.flagged).length;
- $('obstacleTable').innerHTML=screening.length?screening.slice(0,500).map(o=>
-  '<tr><td>'+esc(o.name)+'</td><td>'+(o.topAMSL===null?'Unknown':o.topAMSL.toFixed(1)+' m')+
-  '</td><td style="color:'+(o.flagged?'#ff6878':o.known?'#31c58d':'#ffbd5c')+'">'+
-  esc(o.result)+'</td></tr>'
- ).join(''):'<tr><td colspan="3">No obstacle data.</td></tr>';
- updateCharts();
-}
-function updateCharts(){
- const known=obstacleData.filter(o=>o.height_m!==null).length;
- const unknown=obstacleData.length-known;
- const types={};
- obstacleData.forEach(o=>types[o.type]=(types[o.type]||0)+1);
- if(qualityChart)qualityChart.destroy();
- qualityChart=new Chart($('qualityChart'),{
+ if(surfaceChart)surfaceChart.destroy();
+ surfaceChart=new Chart($('surfaceChart'),{
   type:'doughnut',
-  data:{labels:['Height known','Height unknown'],datasets:[{data:[known,unknown],backgroundColor:['#28c58b','#ffae42']}]},
-  options:{plugins:{legend:{labels:{color:'#dbe8f6',font:{size:10}}}}}
+  data:{labels:Object.keys(counts),datasets:[{data:Object.values(counts),backgroundColor:Object.keys(counts).map(k=>surfaceColors[k])}]},
+  options:{plugins:{legend:{labels:{color:'#dce8f5',font:{size:10}}}}}
  });
- if(typeChart)typeChart.destroy();
- typeChart=new Chart($('typeChart'),{
+}
+function updateObstacleChart(){
+ const flagged=lastScreening.filter(o=>o.flagged).length;
+ const clear=lastScreening.length-flagged;
+ if(obstacleChart)obstacleChart.destroy();
+ obstacleChart=new Chart($('obstacleChart'),{
   type:'bar',
-  data:{labels:Object.keys(types),datasets:[{data:Object.values(types),backgroundColor:'#438dff'}]},
-  options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{
-   x:{beginAtZero:true,ticks:{color:'#cbd9e8',precision:0},grid:{color:'#293e57'}},
-   y:{ticks:{color:'#cbd9e8'},grid:{color:'#293e57'}}
+  data:{labels:['Above reference','At/below reference'],datasets:[{data:[flagged,clear],backgroundColor:['#ff5e6c','#2bc48a']}]},
+  options:{plugins:{legend:{display:false}},scales:{
+   x:{ticks:{color:'#cbd8e6'},grid:{color:'#263b54'}},
+   y:{beginAtZero:true,ticks:{color:'#cbd8e6',precision:0},grid:{color:'#263b54'}}
   }}
  });
 }
-
-// EXPORTS
-function download(content,name,type){
- const blob=new Blob([content],{type});
- const u=URL.createObjectURL(blob);const a=document.createElement('a');
- a.href=u;a.download=name;a.click();URL.revokeObjectURL(u);
+function featureToPoint(f){
+ if(!f.geometry)return null;
+ if(f.geometry.type==='Point')return f.geometry.coordinates;
+ if(f.geometry.type==='MultiPoint')return f.geometry.coordinates[0];
+ return null;
 }
-$('exportGeo').onclick=()=>{
- if(!olsFeatures.length){alert('Generate OLS surfaces first.');return;}
- download(JSON.stringify({type:'FeatureCollection',name:'Airport_OLS_Prototype',features:olsFeatures},null,2),
-  ($('icao').value||'Airport')+'_OLS.geojson','application/geo+json');
- log('OLS footprints exported as GeoJSON.');
+function runScreening(){
+ const ref=num('refHeight');
+ if(!Number.isFinite(ref))throw new Error('Invalid reference height.');
+ lastScreening=[];
+ obstacles.forEach((o,i)=>{
+  let inside=[];
+  if(o.coordinates){
+   const pt=turf.point(o.coordinates);
+   generatedFeatures.forEach(f=>{
+    try{if(turf.booleanPointInPolygon(pt,f))inside.push(f.properties.surface)}catch(e){}
+   });
+  }
+  // This is a simple user-defined reference-height check, not a
+  // calculated ICAO sloping surface elevation at the obstacle location.
+  const flagged=inside.length>0 && Number(o.height)>ref;
+  lastScreening.push({...o,inside,flagged,index:i+1});
+ });
+ $('kObstacles').textContent=obstacles.length;
+ $('kFlags').textContent=lastScreening.filter(o=>o.flagged).length;
+ $('obstacleRows').innerHTML=lastScreening.length?lastScreening.map(o=>
+  `<tr><td>${escapeHTML(o.name)}</td><td>${Number(o.height).toFixed(1)} m</td><td style="color:${o.flagged?'#ff6a78':'#35d69c'}">${o.flagged?'REVIEW':'No flag'}</td></tr>`
+ ).join(''):'<tr><td colspan="3">No obstacle data loaded</td></tr>';
+ updateObstacleChart();
+}
+function escapeHTML(s){
+ return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function drawObstacles(){
+ obstacleLayer.clearLayers();
+ obstacles.forEach(o=>{
+  if(!o.coordinates)return;
+  L.circleMarker([o.coordinates[1],o.coordinates[0]],{
+   radius:6,color:'#fff',weight:1,fillColor:'#ff5e6c',fillOpacity:.9
+  }).addTo(obstacleLayer)
+   .bindPopup(`<b>${escapeHTML(o.name)}</b><br>Height: ${o.height} m<br>Coordinate: ${o.coordinates[1]}, ${o.coordinates[0]}`);
+ });
+}
+function parseCSV(text){
+ const lines=text.trim().split(/\r?\n/);
+ if(lines.length<2)return [];
+ const headers=lines[0].split(',').map(x=>x.trim().toLowerCase().replace(/["']/g,''));
+ const find=names=>headers.findIndex(h=>names.includes(h));
+ const ilat=find(['latitude','lat','y']),ilon=find(['longitude','lon','lng','x']);
+ const ih=find(['height_m','height','elevation','amsl_m']);
+ const iname=find(['name','id','obstacle','description']);
+ if(ilat<0||ilon<0||ih<0)throw new Error('CSV requires latitude, longitude and height_m columns.');
+ return lines.slice(1).map((line,i)=>{
+  const v=line.split(',').map(x=>x.trim().replace(/^"|"$/g,''));
+  return {name:iname>=0?v[iname]:'Obstacle '+(i+1),height:Number(v[ih]),coordinates:[Number(v[ilon]),Number(v[ilat])]};
+ }).filter(o=>o.coordinates.every(Number.isFinite)&&Number.isFinite(o.height));
+}
+$('obstacleFile').addEventListener('change',async e=>{
+ const file=e.target.files[0];if(!file)return;
+ try{
+  const text=await file.text();
+  if(file.name.toLowerCase().endsWith('.csv'))obstacles=parseCSV(text);
+  else{
+   const data=JSON.parse(text);
+   const features=data.type==='FeatureCollection'?data.features:[data];
+   obstacles=features.map((f,i)=>{
+    const c=featureToPoint(f);
+    const p=f.properties||{};
+    const h=Number(p.height_m??p.height??p.elevation??p.amsl_m);
+    return c&&Number.isFinite(h)?{name:p.name||p.id||'Obstacle '+(i+1),height:h,coordinates:c}:null;
+   }).filter(Boolean);
+  }
+  drawObstacles();runScreening();
+  log('Loaded '+obstacles.length+' obstacle point records from '+file.name+'.');
+  if(!obstacles.length)log('No valid point features with height attributes were found.');
+ }catch(err){alert(err.message);log('Obstacle import failed: '+err.message);}
+});
+$('clearObstacles').onclick=()=>{
+ obstacles=[];lastScreening=[];obstacleLayer.clearLayers();
+ $('obstacleRows').innerHTML='<tr><td colspan="3">No obstacle data loaded</td></tr>';
+ $('kObstacles').textContent='0';$('kFlags').textContent='0';
+ updateObstacleChart();log('Obstacle data cleared.');
 };
-$('exportCSV').onclick=()=>{
- if(!screening.length){alert('Fetch obstacles first.');return;}
- const rows=[['id','name','type','longitude','latitude','object_height_m','terrain_elevation_m','top_elevation_AMSL_m','height_source','surfaces','screening_result','osm_url']];
- screening.forEach(o=>rows.push([
-  o.id,o.name,o.type,o.coordinates[0],o.coordinates[1],
-  o.height_m??'',o.terrain_m??'',o.topAMSL??'',o.heightSource,
-  o.surfaces.join(';'),o.result,o.osmUrl
- ]));
- const csv=rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\n');
- download(csv,($('icao').value||'Airport')+'_obstacle_screening.csv','text/csv');
- log('Obstacle screening CSV exported.');
+$('generate').onclick=()=>{
+ generateOLS();
+ if(generatedFeatures.length)runScreening();
 };
-$('clear').onclick=()=>{
- surfaceLayer.clearLayers();obstacleLayer.clearLayers();olsFeatures=[];obstacleData=[];screening=[];
- $('kSurfaces').textContent='0';$('kObstacles').textContent='0';$('kKnown').textContent='0';$('kFlags').textContent='0';
- $('surfaceInventory').textContent='No surfaces generated.';
- $('obstacleTable').innerHTML='<tr><td colspan="3">No obstacle data.</td></tr>';
- $('obstacleStatus').textContent='Analysis cleared.';
- updateCharts();log('Analysis layers cleared.');
+$('reset').onclick=()=>{
+ map.setView([13.338,-16.652],13);
+ log('Map view reset to Banjul International Airport.');
 };
 $('zoomAirport').onclick=()=>{
- if(selectedAirport)map.setView([Number(selectedAirport.latitude_deg),Number(selectedAirport.longitude_deg)],14);
+ const a=[num('lat14'),num('lon14')],b=[num('lat32'),num('lon32')];
+ map.fitBounds(L.latLngBounds(a,b).pad(.5));
 };
-$('fitAll').onclick=()=>{
- const g=L.featureGroup([runwayLayer,surfaceLayer,obstacleLayer]);
- if(g.getLayers().length)map.fitBounds(g.getBounds().pad(.1));
+$('fitOLS').onclick=()=>{
+ const group=L.featureGroup([surfaceLayer,runwayLayer]);
+ if(group.getLayers().length)map.fitBounds(group.getBounds().pad(.1));
 };
-$('toggleObstacles').onclick=()=>{
- if(map.hasLayer(obstacleLayer))map.removeLayer(obstacleLayer);else obstacleLayer.addTo(map);
+$('airport').onchange=e=>{
+ if(e.target.value==='gbyd'){
+  $('airportName').value='Banjul International Airport';$('icao').value='GBYD';$('rwy').value='14/32';
+  $('length').value=3600;$('width').value=45;
+  $('lat14').value=13.348600;$('lon14').value=-16.664801;
+  $('lat32').value=13.327400;$('lon32').value=-16.639601;
+  $('elev14').value=26.82;$('elev32').value=22.56;
+  log('GBYD demonstration reference parameters restored.');
+ }else{
+  $('airportName').value='Custom Airport';$('icao').value='CUSTOM';
+  log('Custom airport selected. Enter verified runway parameters.');
+ }
+};
+function download(content,name,type){
+ const blob=new Blob([content],{type});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement('a');a.href=url;a.download=name;a.click();
+ URL.revokeObjectURL(url);
+}
+$('exportGeo').onclick=()=>{
+ if(!generatedFeatures.length){alert('Generate OLS footprints first.');return;}
+ const fc={type:'FeatureCollection',name:'Gambia_OLS_Prototype',features:generatedFeatures};
+ download(JSON.stringify(fc,null,2),'GBYD_OLS_surfaces.geojson','application/geo+json');
+ log('Exported OLS footprints to GeoJSON.');
+};
+$('exportObstacles').onclick=()=>{
+ if(!lastScreening.length){alert('Load obstacle data and run screening first.');return;}
+ const rows=[['name','longitude','latitude','height_m','surface_intersections','above_reference_height']];
+ lastScreening.forEach(o=>rows.push([
+  o.name,o.coordinates[0],o.coordinates[1],o.height,o.inside.join(';'),o.flagged
+ ]));
+ const csv=rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\n');
+ download(csv,'GBYD_obstacle_screening.csv','text/csv');
+ log('Exported obstacle screening table.');
 };
 
-loadAirports();
+updateObstacleChart();
+drawRunway();
+log('GBYD dashboard ready.');
+log('Reference runway: 14/32. Confirm all runway data with the current official Gambia AIP before use.');
 </script>
 </body>
 </html>
+
